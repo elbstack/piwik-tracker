@@ -13,7 +13,7 @@ const events = require('events');
 const util   = require('util');
 const qs     = require('querystring');
 
-let agent;
+var agent;
 
 
 /**
