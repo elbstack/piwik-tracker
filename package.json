@@ -33,5 +33,9 @@
   "engines": {
     "node": ">=4.2.0"
   },
-  "license": "MIT"
+  "license": "MIT",
+  "dependencies": {
+    "es6-promise": "^4.1.0",
+    "isomorphic-fetch": "^2.2.1"
+  }
 }

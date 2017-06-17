@@ -8,13 +8,13 @@
 
 'use strict';
 
+require('es6-promise').polyfill();
+require('isomorphic-fetch');
+
 const assert = require('assert');
 const events = require('events');
 const util   = require('util');
 const qs     = require('querystring');
-
-var agent;
-
 
 /**
  * @constructor
@@ -31,9 +31,6 @@ function PiwikTracker (siteId, trackerUrl) {
 
   this.siteId = siteId;
   this.trackerUrl = trackerUrl;
-
-  // Use either HTTPS or HTTP agent according to Piwik tracker URL
-  agent = require( trackerUrl.startsWith('https') ? 'https' : 'http' );
 }
 util.inherits(PiwikTracker, events.EventEmitter);
 
@@ -62,16 +59,9 @@ PiwikTracker.prototype.track = function track (options) {
 
   var requestUrl = this.trackerUrl + '?' + qs.stringify(options);
   var self = this;
-  var req = agent.get(requestUrl, function(res) {
-    // Check HTTP statuscode for 200 and 30x
-    if ( !/^(200|30[12478])$/.test(res.statusCode) ) {
-      if (hasErrorListeners) { self.emit('error', res.statusCode); }
-    }
+  fetch(requestUrl, { mode: 'no-cors' }).then(function(res) {
+    // simply do nothing at the moment
   });
-
-  req.on('error', function(err) { hasErrorListeners && self.emit('error', err.message) });
-
-  req.end();
 };
 
 
