@@ -41,8 +41,6 @@ function PiwikTracker (siteId, trackerUrl) {
  * @param {(String|Object)} URL to track or options (must contain URL as well)
  */
 PiwikTracker.prototype.track = function track (options) {
-  var hasErrorListeners = this.listeners('error').length;
-
   if (typeof options === 'string') {
     options = { url: options };
   }
@@ -55,7 +53,6 @@ PiwikTracker.prototype.track = function track (options) {
   assert.ok(options.url, 'URL to be tracked must be specified.');
 
   var requestUrl = this.trackerUrl + '?' + qs.stringify(options);
-  var self = this;
   fetch(requestUrl, { mode: 'no-cors' }).then(function(res) {
     // simply do nothing at the moment
   });
